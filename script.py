@@ -47,8 +47,7 @@ def choose_spell(class_name):
         # Takes first two elements (first two sentences) and adds them to string
         chosenSpellString = (chosenSpellList[0]) + ". " + chosenSpellList[1] + "."
         # Removing every instance of <p> and </p> from the spell description
-        chosenSpellString = chosenSpellString.replace("<p>", "")
-        chosenSpellString = chosenSpellString.replace("</p>", "")
+        chosenSpellString = chosenSpellString.replace("<p>", "").replace("</p>", "")
         return Color.GREEN + randomSpell['name'] + Color.END + "\n" + textwrap.fill(chosenSpellString, width=100)
 
         # Print out list of all SpellClass variables
