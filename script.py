@@ -3,6 +3,7 @@
 import json
 import random
 import textwrap
+from pick import pick
 
 
 class SpellClass:
@@ -41,29 +42,28 @@ def choose_spell(class_name):
         filteredData = [spell for spell in data if class_name in spell['class']]
         # Select random spell
         randomSpell = filteredData[random.randint(0, len(filteredData) - 1)]
-        # Print random spell
-        return Color.GREEN + randomSpell['name'] + Color.END + "\n" + textwrap.fill(
-            textwrap.shorten(randomSpell['desc'], width=300), width=100)
+        # Splits spell description into a list
+        chosenSpellList = randomSpell['desc'].split(".")
+        # Takes first two elements (first two sentences) and adds them to string
+        chosenSpellString = (chosenSpellList[0]) + ". " + chosenSpellList[1] + "."
+        # Removing every instance of <p> and </p> from the spell description
+        chosenSpellString = chosenSpellString.replace("<p>", "").replace("</p>", "")
+        return Color.GREEN + randomSpell['name'] + Color.END + "\n" + textwrap.fill(chosenSpellString, width=100)
+
+        # Print out list of all SpellClass variables
+        # Then take user input for class
+        # Return class name
 
 
-# Print out list of all SpellClass variables
-# Then take user input for class
-# Return class name
 def choose_class():
-    print("+ " + "Bard - An inspiring magician")
-    print("+ " + "Cleric - A priestly champion")
-    print("+ " + "Druid - A priest of the Old Faith")
-    print("+ " + "Paladin - A holy warrior")
-    print("+ " + "Ranger - A warrior")
-    print("+ " + "Sorcerer - A spellcaster")
-    print("+ " + "Warlock - A wielder of magic")
-    print("+ " + "Wizard - A scholarly magic-user")
-    print()
-    class_name = input(Color.BOLD + "Choose a class:" + Color.END + " ").capitalize()
-    # Error handling
-    while class_name not in SpellClass.__dict__.values():
-        class_name = input(Color.BOLD + "Choose a class:" + Color.END + " ")
-
+    options = ["Bard - An inspiring magician", "Cleric - A priestly champion", "Druid - A priest of the Old Faith",
+               "Paladin - A holy warrior", "Ranger - A warrior", "Sorcerer - A spellcaster",
+               "Warlock - A wielder of magic", "Wizard - A scholarly magic-user"]
+    title = "Choose a class: "
+    option, index = pick(options, title)
+    optionString = option.split(" ")[0]
+    class_name = optionString
+    print(Color.BOLD + "\nYou chose " + class_name + Color.END)
     # Return class name
     return class_name
 
@@ -76,9 +76,11 @@ if __name__ == '__main__':
     print(sparkle * int(len(title) / 2))
     print((" " * int(len(title) / 8)) + title)
     print(sparkle * int(len(title) / 2))
-    print()
     status = True
+    print()
 
+    begin = input(
+        Color.BOLD + Color.RED + "HIT ENTER TO BEGIN" + Color.END)
     # Main Loop
     while status is True:
         # Print random entry
